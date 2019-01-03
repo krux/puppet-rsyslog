@@ -8,14 +8,24 @@ $config
 <% if $facility != "default" and size($config) < 3 { -%>
   <%= sprintf( '%-30s %s%s%s', $facility, 'action(type="',$type,'" ' )-%>
   <%  if $config { -%>
-    <% $config.each |$k, $v| { -%> <%= $k -%>="<%= $v -%>" <% }-%>)
+    <% $config.each |$k, $v| { -%>
+      <% if $v =~ Array { -%>
+        <%= $k -%>=<%= $v -%>
+      <% } else { -%>
+        <%= $k -%>="<%= $v -%>"
+      <% } -%>
+    <% } -%>)
   <%-}%>
 <%}-%>
 <% elsif $facility != "default" and size($config) > 2 { -%>
   <%= sprintf( '%-30s %s%s%s', $facility, 'action(type="',$type,'" ' )%>
   <%  if $config { -%>
     <% $config.each |$k, $v| { -%>
-      <%= sprintf('%33s%-s="%s"',' ',$k,$v)%>
+      <% if $v =~ Array { -%>
+        <%= sprintf('%33s%-s=%s',' ',$k,$v)%>
+      <% } else { -%>
+        <%= sprintf('%33s%-s="%s"',' ',$k,$v)%>
+      <% } -%>
     <%}-%>
   <%}-%>
 <%= sprintf('%32s',')') %>
@@ -26,7 +36,11 @@ action(type="<%= $type %>"
 <%}-%>
 <% if $config { -%>
   <% $config.each |$k, $v| { -%>
-  <%= $k %>="<%= $v %>"
+    <% if $v =~ Array {-%>
+      <%= $k %>=<%= $v %>
+    <% } else { -%>
+      <%= $k %>="<%= $v %>"
+    <% } -%>
   <%}-%>
 <%}-%>
 )
