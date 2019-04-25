@@ -39,7 +39,7 @@ class rsyslog::base {
 
   if $::rsyslog::feature_packages {
     package { $::rsyslog::feature_packages:
-      ensure  => installed,
+      ensure  => $::rsyslog::package_version,
       require => Package[$::rsyslog::package_name],
     }
   }
